@@ -1,10 +1,10 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
 public enum BattleState { START, PLAYERTURN, ENEMYTURN, WON, LOST }
-
+public int count = 0;
 public class BattleSystem : MonoBehaviour
 {
 
@@ -56,7 +56,10 @@ public class BattleSystem : MonoBehaviour
 
 		enemyHUD.SetHP(enemyUnit.currentHP);
 		dialogueText.text = "The attack is successful!";
-
+		//playerUnit.Stamina -= 5;
+		playerUnit.Sleep(-5);
+		playerHUD.SetStamina(playerUnit.currentStamina);
+		state = BattleState.ENEMYTURN
 		yield return new WaitForSeconds(2f);
 
 		if(isDead)
@@ -65,7 +68,53 @@ public class BattleSystem : MonoBehaviour
 			EndBattle();
 		} else
 		{
-			state = BattleState.ENEMYTURN;
+			StartCoroutine(EnemyTurn());
+		}
+	}
+
+	IEnumerator MagicAttack()
+	{
+		bool isDead = enemyUnit.TakeDamage(playerUnit.magicDamage);
+		//playerUnit.Stamina -= 5;
+		playerUnit.Sleep(-7);
+		playerHUD.SetStamina(playerUnit.currentStamina);
+		enemyHUD.SetHP(enemyUnit.currentHP);
+		dialogueText.text = "The attack is successful!";
+		state = BattleState.ENEMYTURN
+		yield return new WaitForSeconds(2f);
+
+		if (isDead)
+		{
+			state = BattleState.WON;
+			EndBattle();
+		}
+		else
+		{
+			StartCoroutine(EnemyTurn());
+		}
+	}
+	
+	IEnumerator StrongAttack()
+	{
+		bool isDead = enemyUnit.TakeDamage(playerUnit.damage);
+		//playerUnit.Stamina -= 5;
+		playerUnit.Sleep(-10);
+		playerHUD.SetStamina(playerUnit.currentStamina);
+
+		enemyHUD.SetHP(enemyUnit.currentHP);
+		dialogueText.text = "The attack is successful!";
+		
+
+		state = BattleState.ENEMYTURN
+		yield return new WaitForSeconds(2f);
+
+		if (isDead)
+		{
+			state = BattleState.WON;
+			EndBattle();
+		}
+		else
+		{
 			StartCoroutine(EnemyTurn());
 		}
 	}
@@ -115,11 +164,24 @@ public class BattleSystem : MonoBehaviour
 		playerUnit.Heal(5);
 
 		playerHUD.SetHP(playerUnit.currentHP);
-		dialogueText.text = "You feel renewed strength!";
-
+		dialogueText.text = "You feel renewed strenght!";
+		state = BattleState.ENEMYTURN;
 		yield return new WaitForSeconds(2f);
 
+		
+		StartCoroutine(EnemyTurn());
+	}
+
+	IEnumerator PlayerSleep()
+	{
+		playerUnit.Sleep(10);
+
+		playerHUD.SetStamina(playerUnit.currentStamina);
+		dialogueText.text = "You feel renewed stamina!";
 		state = BattleState.ENEMYTURN;
+		yield return new WaitForSeconds(2f);
+
+
 		StartCoroutine(EnemyTurn());
 	}
 
@@ -137,6 +199,30 @@ public class BattleSystem : MonoBehaviour
 			return;
 
 		StartCoroutine(PlayerHeal());
+	}
+
+	public void OnMagicAttackButton()
+	{
+		if (state != BattleState.PLAYERTURN)
+			return;
+
+		StartCoroutine(MagicAttack());
+	}
+
+	public void OnStrongAttackButton()
+	{
+		if (state != BattleState.PLAYERTURN)
+			return;
+
+		StartCoroutine(StrongAttack());
+	}
+
+	public void OnSleepButton()
+	{
+		if (state != BattleState.PLAYERTURN)
+			return;
+
+		StartCoroutine(PlayerSleep());
 	}
 
 }
