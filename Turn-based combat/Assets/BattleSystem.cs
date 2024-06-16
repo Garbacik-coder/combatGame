@@ -4,9 +4,9 @@ using UnityEngine;
 using UnityEngine.UI;
 
 public enum BattleState { START, PLAYERTURN, ENEMYTURN, WON, LOST }
-public int count = 0;
 public class BattleSystem : MonoBehaviour
 {
+	public int count = 0;
 
 	public GameObject playerPrefab;
 	public GameObject enemyPrefab;
@@ -59,7 +59,7 @@ public class BattleSystem : MonoBehaviour
 		//playerUnit.Stamina -= 5;
 		playerUnit.Sleep(-5);
 		playerHUD.SetStamina(playerUnit.currentStamina);
-		state = BattleState.ENEMYTURN
+		state = BattleState.ENEMYTURN;
 		yield return new WaitForSeconds(2f);
 
 		if(isDead)
@@ -80,7 +80,7 @@ public class BattleSystem : MonoBehaviour
 		playerHUD.SetStamina(playerUnit.currentStamina);
 		enemyHUD.SetHP(enemyUnit.currentHP);
 		dialogueText.text = "The attack is successful!";
-		state = BattleState.ENEMYTURN
+		state = BattleState.ENEMYTURN;
 		yield return new WaitForSeconds(2f);
 
 		if (isDead)
@@ -103,9 +103,9 @@ public class BattleSystem : MonoBehaviour
 
 		enemyHUD.SetHP(enemyUnit.currentHP);
 		dialogueText.text = "The attack is successful!";
-		
 
-		state = BattleState.ENEMYTURN
+
+		state = BattleState.ENEMYTURN;
 		yield return new WaitForSeconds(2f);
 
 		if (isDead)

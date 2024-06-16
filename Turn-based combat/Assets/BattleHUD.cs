@@ -9,7 +9,7 @@ public class BattleHUD : MonoBehaviour
 	public Text nameText;
 	public Text levelText;
 	public Slider hpSlider;
-	public Slider staminaSlider
+	public Slider staminaSlider;
 
 	public void SetHUD(Unit unit)
 	{
