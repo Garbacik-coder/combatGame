@@ -1,3 +1,4 @@
+using DecisionMaking.UAI;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -6,6 +7,10 @@ using UnityEngine.UI;
 public enum BattleState { START, PLAYERTURN, ENEMYTURN, WON, LOST }
 public class BattleSystem : MonoBehaviour
 {
+    [SerializeField] private DecisionMaker decisionMaker;
+
+    [SerializeField] private AIAction[] actions;
+    
 	public int count = 0;
 
 	public GameObject playerPrefab;
@@ -23,6 +28,8 @@ public class BattleSystem : MonoBehaviour
 	public BattleHUD enemyHUD;
 
 	public BattleState state;
+
+    private AIAction currentAction;
 
     // Start is called before the first frame update
     void Start()
@@ -125,7 +132,9 @@ public class BattleSystem : MonoBehaviour
 
 		yield return new WaitForSeconds(1f);
 
-		bool isDead = playerUnit.TakeDamage(enemyUnit.damage);
+        currentAction = decisionMaker.DecideAction(actions);
+
+        bool isDead = playerUnit.TakeDamage(enemyUnit.damage);
 
 		playerHUD.SetHP(playerUnit.currentHP);
 
