@@ -129,7 +129,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c89f521d7e07adb4db64988e24dbac3f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  unitName: Student (Debil)
+  unitName: Student
   unitLevel: 2
   damage: 15
   magicDamage: 50

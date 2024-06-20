@@ -66,7 +66,7 @@ public class BattleSystem : MonoBehaviour
         playerUnit.Sleep(-5);
         playerHUD.SetStamina(playerUnit.currentStamina);
         state = BattleState.ENEMYTURN;
-        yield return new WaitForSeconds(2f);
+        yield return new WaitForSeconds(1f);
 
         if (isDead)
         {
